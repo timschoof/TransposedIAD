@@ -1,4 +1,4 @@
-function [w, wInQuiet, wUntransposed]=GenerateIADtriple(p)
+function [w, wInQuiet, wUntransposed]=GenerateITDtriple(p)
 %
 %
 ISIsamples=samplify(p.ISI,p.SampFreq);
@@ -47,43 +47,24 @@ else % long masker (actually background noise)
     % generate the signal pulses
     % construct the 3 intervals with ISIs
     for i=1:3
-        if strcmp(p.IAD, 'ITD')
-            % function [w, untransposed]=GenerateITDpulse(ITDpresent, p)
-            if p.MaximalDifference==0 % the typical case, perhaps
-                [x, untransposed]=GenerateITDpulse(p.Order==i, p);
-            else % give the listener the best chance
-                currentLeadingEar = p.LeadingEar; % save the value
-                if p.Order==i % the odd one out: leave ear as is
-                    [x, untransposed]=GenerateITDpulse(1, p);
-                else % swap the leading ear
-                    if p.LeadingEar=='L'
-                        p.LeadingEar='R';
-                    else
-                        p.LeadingEar='L';
-                    end
-                    [x, untransposed]=GenerateITDpulse(1, p);
-                    p.LeadingEar= currentLeadingEar;
+        % function [w, untransposed]=GenerateITDpulse(ITDpresent, p)
+        if p.MaximalDifference==0 % the typical case, perhaps
+            [x, untransposed]=GenerateITDpulse(p.Order==i, p);
+        else % give the listener the best chance
+            currentLeadingEar = p.LeadingEar; % save the value
+            if p.Order==i % the odd one out: leave ear as is
+                [x, untransposed]=GenerateITDpulse(1, p);
+            else % swap the leading ear
+                if p.LeadingEar=='L'
+                    p.LeadingEar='R';
+                else
+                    p.LeadingEar='L';
                 end
+                [x, untransposed]=GenerateITDpulse(1, p);
+                p.LeadingEar= currentLeadingEar;
             end
-        else % manipulate ILD
-            % function [w, untransposed]=GenerateITDpulse(ITDpresent, p)
-            if p.MaximalDifference==0 % the typical case, perhaps
-                [x, untransposed]=GenerateILDpulse(p.Order==i, p);
-            else % give the listener the best chance
-                currentLeadingEar = p.LeadingEar; % save the value
-                if p.Order==i % the odd one out: leave ear as is
-                    [x, untransposed]=GenerateILDpulse(1, p);
-                else % swap the leading ear
-                    if p.LeadingEar=='L'
-                        p.LeadingEar='R';
-                    else
-                        p.LeadingEar='L';
-                    end
-                    [x, untransposed]=GenerateILDpulse(1, p);
-                    p.LeadingEar= currentLeadingEar;
-                end
-            end            
         end
+        
         % if tracking absolute thresholds, scale the modulated tone by the
         % current SNR level. Otherwise, zero out the unmodulated noises
         %% !! not thought about yet!!
@@ -102,25 +83,22 @@ else % long masker (actually background noise)
             wUntransposed=vertcat(wUntransposed,ISIwave);
         end
     end
-    w =wInQuiet;
     %% generate and add in background noise when it is long,
     %  i.e., played through the triple
-        if ~ p.trackAbsThreshold
-            if p.rms2useBackNz > 0
-                Nz=GenerateBackgroundNoiseSAM(p);
-                % centre targets in background noise
-                %% used initially to generate signals with no noise
-                % Nz=zeros(samplify(p.LongMaskerNoise,p.SampFreq),2);
-                xtra = length(Nz)-length(w);
-                xtraFront = ceil(p.propLongMaskerPreTarget*xtra);
-                if xtra>0
-                    w=vertcat(zeros(xtraFront,2),w, zeros(xtra-xtraFront,2));
-                end
-                w = w + Nz;
-            else
-                % w =wInQuiet;
-            end
-        else % if tracking absolute threshold
+    %     if ~ p.trackAbsThreshold
+    %         if p.rms2useBackNz > 0
+    %             w=GenerateBackgroundNoiseSAM(p);
+    %             % centre targets in background noise
+    %             xtra = length(w)-length(AMnz);
+    %             xtraFront = ceil(p.propLongMaskerPreTarget*xtra);
+    %             if xtra>0
+    %                 AMnz=vertcat(zeros(xtraFront,1),AMnz, zeros(xtra-xtraFront,1));
+    %             end
+    %             w = w + AMnz;
+    %         else
+    %             w = AMnz;
+    %         end
+    %     else % if tracking absolute threshold
     %         if p.rms2useBackNz > 0
     %             w=GenerateBackgroundNoiseSAM(p);
     %             % scale background noise
@@ -135,13 +113,13 @@ else % long masker (actually background noise)
     %         else
     %             w = AMnz;
     %         end
-        end
+    %     end
     
 end
 
 % prepend silence to wave if necessary
-w = vertcat(zeros(p.SampFreq*p.preSilence/1000,2),w);
 wInQuiet = vertcat(zeros(p.SampFreq*p.preSilence/1000,2),wInQuiet);
+w=wInQuiet;
 wUntransposed = vertcat(zeros(p.SampFreq*p.preSilence/1000,2),wUntransposed);
 
 

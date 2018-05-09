@@ -8,9 +8,16 @@ function sArgs=TransposedIADsParseArgs(ListenerName,varargin)
 % expressed in dB re 100 us = -6, 0, 6, 12, 18, 21.5 dB
 % Presented in notched noise (800 Hz wide notch, so 3600-4400 Hz)
 % bands of noise above (up to 10 kHz) and below (down to 20 Hz)
-% served as maskers to reduce off-frequency cues at +10 dB (=85 dB SPL)
+% served as maskers to reduce off-frequency cues at +10 dB (=65 dB SPL)
 % masker BW = (3600-20) + (10000-4400) = 9180 Hz : 10*log10(9180)= 39.6
-% Spectrum level = 85 - 39.6 = 45.4 dB SPL
+% Spectrum level = 65 - 39.6 = 25.4 dB SPL
+%
+% Dreyer & Oxenham (2008) used more or less the same notched noise, with
+% the following average spectrum levels
+% Stimulus level  noise spectrum level
+% 40  50   60   70
+% 3.1 11.3 19.5 27.7
+% Plus an extra low-pass background noise (0–400 Hz)
 
 % Target: 500 Hz band of noise centered at 4 kHz and modulated at 19 Hz.
 % Unmodulated bands of noise above (up to 10 kHz) and below (down to 20 Hz)
@@ -57,7 +64,7 @@ p.addParameter('rms2use', 0.1, @isnumeric); % for the target
 p.addParameter('RiseFall', 50, @isnumeric);
 p.addParameter('ISI', 400, @isnumeric);
 p.addParameter('SampFreq', 44100, @isnumeric);
-p.addParameter('dBSPL', 70, @isnumeric);
+p.addParameter('dBSPL', 75, @isnumeric);
 % the nominal level of the fixed signal or noise - not yet used
 
 %% parameters concerned with tracking and the task
@@ -84,11 +91,11 @@ p.addParameter('FacePixDir', 'Bears', @ischar);
 p.addParameter('GoButton', 1, @isnumeric);
 %% parameters concerned with background noise
 p.addParameter('BackNzLevel',-10, @isnumeric); % in dB re target level
-p.addParameter('LoBackNzLoPass',3750, @isnumeric);
+p.addParameter('LoBackNzLoPass',3600, @isnumeric);
 p.addParameter('LoBackNzHiPass',20, @isnumeric);
 %p.addParameter('HiBackNzLevel',0, @isnumeric); % in absolute rms
 p.addParameter('HiBackNzLoPass',10000, @isnumeric);
-p.addParameter('HiBackNzHiPass',4250, @isnumeric);
+p.addParameter('HiBackNzHiPass',4400, @isnumeric);
 % p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
 p.addParameter('PlotTrackFile', 0, @isnumeric); % once test is finished
@@ -111,19 +118,15 @@ p.parse(ListenerName, varargin{:});
 sArgs=p.Results;
 sArgs.SNR_dB = sArgs.starting_SNR; % current level
 
-%sArgs.SAMnoiseBandLimits=[sArgs.TargetCentreFreq-sArgs.SAMnoiseBandWidth/2 sArgs.TargetCentreFreq+sArgs.SAMnoiseBandWidth/2];
-%sArgs.rms2useBackNz = sArgs.rms2use * 10^(sArgs.BackNzLevel/20);
-%% This needs doing properly! For the moment
-sArgs.rms2useBackNz=0.1;
 
-% if masker is fixed, calculate relative spectrum level of masker and
-% background noise
-% if strcmp(sArgs.fixed, 'noise') && sArgs.BackNzLevel>0
-%     masker_dBperHz = 20*log10(sArgs.rms2use)-10*log10(sArgs.NoiseBandWidth);
-%     backgroundNz_dBperHz = 20*log10(sArgs.BackNzLevel)-10*log10(sArgs.BackNzLoPass-sArgs.BackNzHiPass);
-%     sArgs.BackNzdB_re_Msk =  backgroundNz_dBperHz-masker_dBperHz;
-%     fprintf('BackNzdB_re_Msk= %3.1f\n', sArgs.BackNzdB_re_Msk);
-% end
+% if masker is used, det the proper rms level & calculate relative spectrum level of it
+sArgs.rms2useBackNz = sArgs.rms2use * 10^(sArgs.BackNzLevel/20); % rms level of background noise
+MaskerBandwidth = (sArgs.LoBackNzLoPass - sArgs.LoBackNzHiPass) + (sArgs.HiBackNzLoPass - sArgs.HiBackNzHiPass);
+sArgs.masker_dBperHz = sArgs.dBSPL-10*log10(MaskerBandwidth)+sArgs.BackNzLevel;
+    
+%backgroundNz_dBperHz = 20*log10(sArgs.dBSPL)-10*log10(MaskerBandwidth);
+%sArgs.BackNzdB_re_Msk =  backgroundNz_dBperHz-masker_dBperHz;
+%fprintf('BackNzdB_re_Msk= %3.1f\n', sArgs.BackNzdB_re_Msk);
 
 % calculate initialDelay, the time before the 1st signal interval can occur
 if sArgs.LongMaskerNoise<=0 % if maskers are pulsed

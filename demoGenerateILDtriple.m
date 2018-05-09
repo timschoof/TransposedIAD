@@ -15,7 +15,10 @@ p=TransposedIADsParseArgs('L27', 'IAD', 'ILD', 'starting_SNR',starting_SNR, ...
 [w, wInQuiet, wUntransposed]=GenerateIADtriple(p);
 audiowrite(sprintf('ILDtriple-%d-o%d.wav',starting_SNR,p.Order),w,p.SampFreq)
 audiowrite(sprintf('ILDtripleUn-%d-o%d.wav',starting_SNR,p.Order),wUntransposed,p.SampFreq)
+audiowrite(sprintf('ILDtripleQT-%d-o%d.wav',starting_SNR,p.Order),wInQuiet,p.SampFreq)
+
 
 sound(w,p.SampFreq)
+pwelch(w,[],[],[],p.SampFreq)
 % plot(w)
 % sound(wUntransposed,p.SampFreq)
