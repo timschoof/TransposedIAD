@@ -58,13 +58,15 @@ p.addParameter('TranspositionFreq', 4000, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
 p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);  
 
+%p.addParameter('RMEslider', 'FALSE', @ischar); % adjust RME slider from MATLAB? TRUE or FALSE
+p.addParameter('RMEslider', 'TRUE', @ischar); % adjust RME slider from MATLAB? TRUE or FALSE
 p.addParameter('usePlayrec', 1, @isnumeric); % are you using playrec? yes = 1, no = 0
 p.addParameter('VolumeSettingsFile', 'VolumeSettings.txt', @ischar);
 p.addParameter('rms2use', 0.1, @isnumeric); % for the target
 p.addParameter('RiseFall', 50, @isnumeric);
 p.addParameter('ISI', 400, @isnumeric);
 p.addParameter('SampFreq', 44100, @isnumeric);
-p.addParameter('dBSPL', 75, @isnumeric);
+p.addParameter('dBSPL', 80, @isnumeric);
 % the nominal level of the fixed signal or noise - not yet used
 
 %% parameters concerned with tracking and the task
@@ -72,7 +74,7 @@ p.addParameter('dBSPL', 75, @isnumeric);
 % present tones in quiet in order to find absolute threshold without the
 % masker present. Only makes sense for fixed masker
 p.addParameter('LeadingEar', 'L',  @(x)any(strcmpi(x,{'L','R'})));
-p.addParameter('MaximalDifference', 0, @isnumeric);
+p.addParameter('MaximalDifference', 1, @isnumeric);
 % if MaximalDifference=0, standards have ITD=0
 % if MaximalDifference=1, standards have ITD the same as the odd one out,
 % but with the ears flipped
@@ -119,7 +121,7 @@ sArgs=p.Results;
 sArgs.SNR_dB = sArgs.starting_SNR; % current level
 
 
-% if masker is used, det the proper rms level & calculate relative spectrum level of it
+% if masker is used, set the proper rms level & calculate relative spectrum level of it
 sArgs.rms2useBackNz = sArgs.rms2use * 10^(sArgs.BackNzLevel/20); % rms level of background noise
 MaskerBandwidth = (sArgs.LoBackNzLoPass - sArgs.LoBackNzHiPass) + (sArgs.HiBackNzLoPass - sArgs.HiBackNzHiPass);
 sArgs.masker_dBperHz = sArgs.dBSPL-10*log10(MaskerBandwidth)+sArgs.BackNzLevel;
@@ -150,5 +152,15 @@ else
     sArgs.blo=0;sArgs.alo=0;
 end
 
+%% Get audio device ID based on the USB name of the device.
+if sArgs.usePlayrec == 1 % if you're using playrec
+    dev = playrec('getDevices');
+    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
+    sArgs.playDeviceInd = dev(d).deviceID; 
+    sArgs.recDeviceInd = dev(d).deviceID;
+end
+
+%% Read in feedback faces
+sArgs=readFaces(sArgs);
 
 
