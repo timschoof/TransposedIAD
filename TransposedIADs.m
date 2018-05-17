@@ -17,9 +17,9 @@ end
 p=TransposedIADsParseArgs(varargin{1},varargin{2:end});
 
 %% Settings for level
-if ispc
+if ispc && p.usePlayrec == 0
     [~, OutRMS]=SetLevels(p.VolumeSettingsFile);
-else ismac
+elseif ismac
     !osascript set_volume_applescript.scpt
     % VolumeSettingsFile='VolumeSettingsMac.txt';
 end
@@ -323,8 +323,8 @@ elseif p.PlotTrackFile
 end
 
 if p.usePlayrec==1
-    % close psych toolbox audio
-    PsychPortAudio('DeleteBuffer');
-    PsychPortAudio('Close');
+    if playrec('isInitialised')
+        playrec('reset');
+    end
 end
 

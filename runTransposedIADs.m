@@ -1,7 +1,7 @@
 %%
 clear
 close all
-IAD='ITD';
+IAD='ILD';
 if strcmp(IAD, 'ITD')
     ITD = 1200; % in us -- 12500 is 1/2 period for 40 Hz modulation
     starting_SNR=20*log10(ITD/100);

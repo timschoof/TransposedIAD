@@ -37,7 +37,7 @@ p.addRequired('ListenerName', @ischar);
 
 % p.addParameter('SAMnoiseBandWidth', 500, @isnumeric); % always centred on the probe
 % p.addParameter('TargetCentreFreq', 4000, @isnumeric);
-p.addParameter('ModulationRate', 40, @isnumeric);
+p.addParameter('ModulationRate', 125, @isnumeric);
 p.addParameter('ModulationPhase', -3*pi/2, @isnumeric);
 p.addParameter('IAD', 'ITD',  @(x)any(strcmpi(x,{'ITD','ILD'})));
 % Inter Aural Difference
@@ -45,14 +45,14 @@ p.addParameter('SignalDuration', 400, @isnumeric);
 p.addParameter('NoiseDuration', 500, @isnumeric);
 % the duration of the masker pulse. If longer than the target, the target is
 % centred in it. Only relevant if LongMaskerNoise=0
-p.addParameter('LongMaskerNoise', 3000, @isnumeric);
+p.addParameter('LongMaskerNoise', 2400, @isnumeric);
 % if 0, masker noise is pulsed along with target intervals
 % if >0 = continuous through triple at given duration (ms)
-p.addParameter('propLongMaskerPreTarget', 0.5, @isnumeric);
+p.addParameter('propLongMaskerPreTarget', 0.9, @isnumeric);
 % a parameter to put targets towards one end or the other of the
 % LongMaskerNoise. This is the proportion of time that the 'extra' masker
 % duration is put at the start of the trial
-p.addParameter('preSilence', 100, @isnumeric);
+p.addParameter('preSilence', 0, @isnumeric);
 % an interval of silence prepended to the wave to try to avoid sound glitches in Windows
 p.addParameter('TranspositionFreq', 4000, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
@@ -61,8 +61,8 @@ p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);
 %p.addParameter('RMEslider', 'FALSE', @ischar); % adjust RME slider from MATLAB? TRUE or FALSE
 p.addParameter('RMEslider', 'TRUE', @ischar); % adjust RME slider from MATLAB? TRUE or FALSE
 p.addParameter('usePlayrec', 1, @isnumeric); % are you using playrec? yes = 1, no = 0
-p.addParameter('VolumeSettingsFile', 'VolumeSettings.txt', @ischar);
-p.addParameter('rms2use', 0.1, @isnumeric); % for the target
+p.addParameter('VolumeSettingsFile', 'VolumeSettings4kHz.txt', @ischar);
+p.addParameter('rms2use', 0.15, @isnumeric); % for the target
 p.addParameter('RiseFall', 50, @isnumeric);
 p.addParameter('ISI', 400, @isnumeric);
 p.addParameter('SampFreq', 44100, @isnumeric);
@@ -78,7 +78,7 @@ p.addParameter('MaximalDifference', 1, @isnumeric);
 % if MaximalDifference=0, standards have ITD=0
 % if MaximalDifference=1, standards have ITD the same as the odd one out,
 % but with the ears flipped
-p.addParameter('starting_SNR',18.0618, @isnumeric); % 18.0618 = 800 us
+p.addParameter('starting_SNR',20, @isnumeric); % 18.0618 = 800 us
 p.addParameter('START_change_dB', 4, @isnumeric);
 p.addParameter('MIN_change_dB', 1, @isnumeric);
 p.addParameter('LevittsK', 2, @isnumeric);
@@ -92,7 +92,7 @@ p.addParameter('MAX_TRIALS', 30, @isnumeric);
 p.addParameter('FacePixDir', 'Bears', @ischar);
 p.addParameter('GoButton', 1, @isnumeric);
 %% parameters concerned with background noise
-p.addParameter('BackNzLevel',-10, @isnumeric); % in dB re target level
+p.addParameter('BackNzLevel',-2, @isnumeric); % in dB re target level
 p.addParameter('LoBackNzLoPass',3600, @isnumeric);
 p.addParameter('LoBackNzHiPass',20, @isnumeric);
 %p.addParameter('HiBackNzLevel',0, @isnumeric); % in absolute rms
