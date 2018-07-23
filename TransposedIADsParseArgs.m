@@ -37,15 +37,15 @@ p.addRequired('ListenerName', @ischar);
 
 % p.addParameter('SAMnoiseBandWidth', 500, @isnumeric); % always centred on the probe
 % p.addParameter('TargetCentreFreq', 4000, @isnumeric);
-p.addParameter('ModulationRate', 125, @isnumeric);
+p.addParameter('ModulationRate', 40, @isnumeric); %125
 p.addParameter('ModulationPhase', -3*pi/2, @isnumeric);
 p.addParameter('IAD', 'ITD',  @(x)any(strcmpi(x,{'ITD','ILD'})));
 % Inter Aural Difference
-p.addParameter('SignalDuration', 400, @isnumeric);
-p.addParameter('NoiseDuration', 500, @isnumeric);
+p.addParameter('SignalDuration', 800, @isnumeric); %400
+p.addParameter('NoiseDuration', 900, @isnumeric); %500
 % the duration of the masker pulse. If longer than the target, the target is
 % centred in it. Only relevant if LongMaskerNoise=0
-p.addParameter('LongMaskerNoise', 2400, @isnumeric);
+p.addParameter('LongMaskerNoise', 3600, @isnumeric); %2400
 % if 0, masker noise is pulsed along with target intervals
 % if >0 = continuous through triple at given duration (ms)
 p.addParameter('propLongMaskerPreTarget', 0.9, @isnumeric);
@@ -100,10 +100,10 @@ p.addParameter('HiBackNzLoPass',10000, @isnumeric);
 p.addParameter('HiBackNzHiPass',4400, @isnumeric);
 % p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
-p.addParameter('PlotTrackFile', 0, @isnumeric); % once test is finished
+p.addParameter('PlotTrackFile', 1, @isnumeric); % once test is finished
 p.addParameter('DEBUG', 0, @isnumeric);
 p.addParameter('outputAllWavs', 0, @isnumeric); % for debugging purposes
-p.addParameter('MAX_SNR_dB', 22, @isnumeric); % maximal difference
+p.addParameter('MAX_SNR_dB', 32, @isnumeric); % maximal difference
 p.addParameter('MIN_SNR_dB', 0.5, @isnumeric); % minimal difference: for ILD only
 p.addParameter('IgnoreTrials', 3, @isnumeric); % number of initial trials to ignore errors on
 p.addParameter('OutputDir','results', @ischar);
