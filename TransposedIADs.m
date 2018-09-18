@@ -97,7 +97,7 @@ if p.outputAllWavs % make a directory for all the output waves
 end
 
 % Construct a condition code
-CondCode=sprintf('%s-%ddBSPL-%03drms-%d',p.IAD,p.dBSPL,round(p.rms2use*1000),p.ModulationRate);
+CondCode=sprintf('%s-%ddBSPL-%03drms',p.IAD,p.dBSPL,round(p.rms2use*1000));
 FileListenerName=[p.ListenerName '_' CondCode '_' StartDate '_' FileNamingStartTime];
 OutFile = fullfile(p.OutputDir, [FileListenerName '.csv']);
 SummaryOutFile = fullfile(p.OutputDir, [FileListenerName '_sum.csv']);
@@ -329,7 +329,7 @@ fclose('all');
 set(0,'ShowHiddenHandles','on');
 delete(findobj('Type','figure'));
 if ~p.DEBUG && ~p.PlotTrackFile
-%     FinishButton; % indicate test is over
+    FinishButton; % indicate test is over
 elseif p.PlotTrackFile
     plotHandle = plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
     saveas(plotHandle,fullfile(p.OutputDir,[FileListenerName '.png']));

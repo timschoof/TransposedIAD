@@ -19,6 +19,9 @@ nTrials=size(d,1)-1;
 
 iTrial = find(strcmp([d(1,:)], 'trial'));
 iSNR = find(strcmp([d(1,:)], 'IAD'));
+if isempty(iSNR)
+   iSNR = find(strcmp([d(1,:)], 'dBatten'));
+end
 iCorrect = find(strcmp([d(1,:)], 'correct'));
 
 trial=[]; SNR=[]; correct=[]; response=[]; order=[];
@@ -37,9 +40,6 @@ if length(trial)>5
     plot(trial(correct==1), SNR(correct==1), 'go')
     % ylim([minSNR maxSNR]);
     title(strrep(labelString,'_','-'))
-    saveas(gcf,['',fileName,'.jpg',''])
-    pause(1.5)
-    close(gcf)
 end
 
 
