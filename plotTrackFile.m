@@ -1,5 +1,7 @@
-function plotTrackFile(fileName, labelString)
+function plotHandle = plotTrackFile(fileName, labelString)
 
+% Version 2.0 - September 2018
+% return graphics file handle
 % minSNR=-20;
 % maxSNR=25;
 
@@ -32,7 +34,7 @@ for c=2:nTrials+1
 end
 
 if length(trial)>5
-    plot(trial, SNR, '-k')
+    plotHandle = plot(trial, SNR, '-k');
     hold on
     plot(trial(correct==0), SNR(correct==0), 'ro')
     plot(trial(correct==1), SNR(correct==1), 'go')

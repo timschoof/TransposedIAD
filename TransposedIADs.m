@@ -2,7 +2,7 @@ function TransposedIADs(varargin)
 % Run an experiment
 
 % Version 1.0 -- April 2018
-% based on NoiseySAM
+% based on NoisySAM
 %
 % Stuart Rosen & Tim Schoof
 
@@ -16,20 +16,17 @@ if ~rem(nargin,2)
 end
 p=TransposedIADsParseArgs(varargin{1},varargin{2:end});
 
-%% Get audio device ID based on the USB name of the device.
-if p.usePlayrec == 1 % if you're using playrec
-    dev = playrec('getDevices');
-    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
-    playDeviceInd = dev(d).deviceID; 
-    recDeviceInd = dev(d).deviceID;
-end
-
 %% Settings for level
-if ispc
+if ispc && p.usePlayrec == 0
     [~, OutRMS]=SetLevels(p.VolumeSettingsFile);
-else ismac
+elseif ismac
     !osascript set_volume_applescript.scpt
     % VolumeSettingsFile='VolumeSettingsMac.txt';
+end
+
+%% Set RME Slider if necessary
+if strcmp(p.RMEslider,'TRUE')
+    PrepareRMEslider('RMEsettings.csv',p.dBSPL);
 end
 
 %% further initialisations
@@ -50,19 +47,6 @@ if p.START_change_dB==0 || p.MIN_change_dB == 0
     p.FINAL_TURNS = 99;
     LEVITTS_CONSTANT = [1 1];
     MaxBumps=99;
-end
-
-%% read in all the necessary faces for feedback
-if ~strcmp(p.FeedBack, 'None')
-    FacesDir = fullfile('Faces',p.FacePixDir,'');
-    SmileyFace = imread(fullfile(FacesDir,'smile24.bmp'),'bmp');
-    WinkingFace = imread(fullfile(FacesDir,'wink24.bmp'),'bmp');
-    FrownyFace = imread(fullfile(FacesDir,'frown24.bmp'),'bmp');
-    %ClosedFace = imread(fullfile(FacesDir,'closed24.bmp'),'bmp');
-    %OpenFace = imread(fullfile(FacesDir,'open24.bmp'),'bmp');
-    %BlankFace = imread(fullfile(FacesDir,'blank24.bmp'),'bmp');
-    p.CorrectImage=SmileyFace;
-    p.IncorrectImage=FrownyFace;
 end
 
 %%	setup a few starting values for adaptive track
@@ -139,11 +123,16 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
     % present same level until change criterion reached */
     while ((num_correct < LEVITTS_CONSTANT(levitts_index)) && (num_wrong==0))
         trial=trial+1;
-        % choose a random interval of 3
-        p.Order=randi(3);
-        
-        % generate the appropriate sounds
-        [w, wInQuiet, wUntransposed]=GenerateIADtriple(p);
+        % choose a random interval of 2 or 3 
+        if strcmp(p.TaskFormat, '2I-2AFC')
+            p.Order=randi(2);
+            % generate the appropriate sounds
+            [w, wInQuiet, wUntransposed]=GenerateIADduple(p);
+        else 
+            p.Order=randi(3);
+            % generate the appropriate sounds
+            [w, wInQuiet, wUntransposed]=GenerateIADtriple(p);
+        end
 
         %% ensure no overload
         % function [OutWave, flag] = NoClipStereo(InWave,message)
@@ -162,18 +151,17 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
             audiowrite(fullfile(p.wavOutputDir,sprintf('Un%02d-%s-o%d.wav',trial,currentSNRrounded,p.Order)),wUntransposed,p.SampFreq);
         end
         %% play it out and score it.
-        % intialize playrec if necessary
-        if p.usePlayrec == 1 % if you're using playrec
-            if playrec('isInitialised')
-                fprintf('Resetting playrec as previously initialised\n');
-                playrec('reset');
-            end
-            playrec('init', p.SampFreq, playDeviceInd, recDeviceInd);
-        end
         if ~p.DEBUG % normal operation
-            [response,p] = PlayAndReturnResponse3I3AFC(w,trial,p);
+            if strcmp(p.TaskFormat, '2I-2AFC')
+                [response,p] = PlayAndReturnResponse2I2AFC(w,trial,p);
+            else
+                [response,p] = PlayAndReturnResponse3I3AFC(w,trial,p);
+            end
         %% stat rat section for output format, etc.
         else 
+            if strcmp(p.TaskFormat, '2I-2AFC')
+                error('stat rat not yet implemented for 2I-2AFC');
+            end
             % get 2 right at the start of session, and then make
             % performance depend upon the SNR in a reasonable way
             % Here, thereshold ~ 10.2 dB
@@ -213,7 +201,7 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
         % print out relevant information
         % 'listener,CondCode,date,time,trial,SNR,correct,order,response,steprTime,rev');
         
-        fprintf(fout, '\n%s,%s,%s,%s,%3d,%+5.1f,%d,%d,%d,%g,', ...
+        fprintf(fout, '\n%s,%s,%s,%s,%3d,%+5.2f,%d,%d,%d,%g,', ...
             p.ListenerName,CondCode,StartDate,StartTimeString,trial,...
             p.SNR_dB,correct,p.Order,response,change);
         fprintf(fout, '%02d:%02d:%05.2f',...
@@ -343,12 +331,13 @@ delete(findobj('Type','figure'));
 if ~p.DEBUG && ~p.PlotTrackFile
     FinishButton; % indicate test is over
 elseif p.PlotTrackFile
-    plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
+    plotHandle = plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
+    saveas(plotHandle,fullfile(p.OutputDir,[FileListenerName '.png']));
 end
 
 if p.usePlayrec==1
-    % close psych toolbox audio
-    PsychPortAudio('DeleteBuffer');
-    PsychPortAudio('Close');
+    if playrec('isInitialised')
+        playrec('reset');
+    end
 end
 
