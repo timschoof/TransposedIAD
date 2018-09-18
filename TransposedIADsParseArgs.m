@@ -37,15 +37,23 @@ p.addRequired('ListenerName', @ischar);
 
 % p.addParameter('SAMnoiseBandWidth', 500, @isnumeric); % always centred on the probe
 % p.addParameter('TargetCentreFreq', 4000, @isnumeric);
+<<<<<<< HEAD
 p.addParameter('ModulationRate', 125, @isnumeric);
+=======
+p.addParameter('ModulationRate', 40, @isnumeric); %125
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 p.addParameter('ModulationPhase', -3*pi/2, @isnumeric);
 p.addParameter('IAD', 'ITD',  @(x)any(strcmpi(x,{'ITD','ILD'})));
 % Inter Aural Difference
-p.addParameter('SignalDuration', 400, @isnumeric);
-p.addParameter('NoiseDuration', 500, @isnumeric);
+p.addParameter('SignalDuration', 800, @isnumeric); %400
+p.addParameter('NoiseDuration', 900, @isnumeric); %500
 % the duration of the masker pulse. If longer than the target, the target is
 % centred in it. Only relevant if LongMaskerNoise=0
+<<<<<<< HEAD
 p.addParameter('LongMaskerNoise', 2400, @isnumeric);
+=======
+p.addParameter('LongMaskerNoise', 3600, @isnumeric); %2400
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 % if 0, masker noise is pulsed along with target intervals
 % if >0 = continuous through triple at given duration (ms)
 p.addParameter('propLongMaskerPreTarget', 0.9, @isnumeric);
@@ -73,11 +81,19 @@ p.addParameter('dBSPL', 80, @isnumeric);
 % p.addParameter('inQuiet',0, @isnumeric);
 % present tones in quiet in order to find absolute threshold without the
 % masker present. Only makes sense for fixed masker
+<<<<<<< HEAD
 p.addParameter('LeadingEar', 'R',  @(x)any(strcmpi(x,{'L','R'})));
 p.addParameter('MaximalDifference', 1, @isnumeric);
 % if MaximalDifference=0, standards have ITD=0
 % if MaximalDifference=1, standards have ITD the same as the odd one out,
 %       but with the ears flipped
+=======
+p.addParameter('LeadingEar', 'L',  @(x)any(strcmpi(x,{'L','R'})));
+p.addParameter('MaximalDifference', 1, @isnumeric);
+% if MaximalDifference=0, standards have ITD=0
+% if MaximalDifference=1, standards have ITD the same as the odd one out,
+% but with the ears flipped
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 p.addParameter('starting_SNR',20, @isnumeric); % 18.0618 = 800 us
 p.addParameter('START_change_dB', 4, @isnumeric);
 p.addParameter('MIN_change_dB', 1, @isnumeric);
@@ -102,11 +118,16 @@ p.addParameter('HiBackNzLoPass',10000, @isnumeric);
 p.addParameter('HiBackNzHiPass',4400, @isnumeric);
 % p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
-p.addParameter('PlotTrackFile', 0, @isnumeric); % once test is finished
+p.addParameter('PlotTrackFile', 1, @isnumeric); % once test is finished
 p.addParameter('DEBUG', 0, @isnumeric);
 p.addParameter('outputAllWavs', 0, @isnumeric); % for debugging purposes
+<<<<<<< HEAD
 p.addParameter('MAX_SNR_dB', 22, @isnumeric); % maximal difference
 p.addParameter('MIN_SNR_dB', 0.25, @isnumeric); % minimal difference: for ILD only
+=======
+p.addParameter('MAX_SNR_dB', 32, @isnumeric); % maximal difference
+p.addParameter('MIN_SNR_dB', 0.5, @isnumeric); % minimal difference: for ILD only
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 p.addParameter('IgnoreTrials', 3, @isnumeric); % number of initial trials to ignore errors on
 p.addParameter('OutputDir','results', @ischar);
 p.addParameter('StartMessage', 'none', @ischar);
@@ -164,7 +185,10 @@ end
 
 %% Read in feedback faces
 sArgs=readFaces(sArgs);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 
 

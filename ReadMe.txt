@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2 August 2018
 In GenerateITDpulse(ITDpresent, p)
 look carefully at what channel leads and why modulation had the phase -3*pi/2
@@ -5,6 +6,10 @@ look carefully at what channel leads and why modulation had the phase -3*pi/2
 ----------------------------------------------
 Be careful of playrec() in PsychoacousticTraining!!
 
+=======
+Be careful of playrec() in PsychoacousticTraining!!
+
+>>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
 % Need to do to read in images within argument parsing
 
 In TransposedIADs.m, delete lines 55-66 that read in the faces:
