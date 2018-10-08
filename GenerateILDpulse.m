@@ -19,8 +19,14 @@ L = cos(2*pi*p.ModulationRate*t+p.ModulationPhase);
 R = L*ILD;
 
 % plot(t,L,t,R)
-% function y = TransposeSounds(w,p)
-Lt = TransposeSounds(L,p);
+
+%% Transpose, if necessary
+if p.TranspositionFreq>0
+    % function y = TransposeSounds(w,p)
+    Lt = TransposeSounds(L,p);
+else
+    Lt = L;
+end
 % Rt = Lt; % No ILD on transposed sounds yet
 % plot(t,Lt,t,Rt)
 % normalise transposed sounds to the appropriate rms
@@ -31,7 +37,7 @@ Rt = Lt*ILD;
 %   alter if necessary
 if p.LeadingEar=='R'
     Lx = R; R = L; L=Lx;
-    Lx = Rt; Rt = Lt; Lt=Lx;    
+    Lx = Rt; Rt = Lt; Lt=Lx;
 end
 
 % put rises and falls on the sound pulses,

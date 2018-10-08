@@ -1,4 +1,34 @@
+2 August 2018
+In GenerateITDpulse(ITDpresent, p)
+look carefully at what channel leads and why modulation had the phase -3*pi/2
 
+----------------------------------------------
+Be careful of playrec() in PsychoacousticTraining!!
+
+% Need to do to read in images within argument parsing
+
+In TransposedIADs.m, delete lines 55-66 that read in the faces:
+%% read in all the necessary faces for feedback
+if ~strcmp(p.FeedBack, 'None')
+    FacesDir = fullfile('Faces',p.FacePixDir,'');
+    SmileyFace = imread(fullfile(FacesDir,'smile24.bmp'),'bmp');
+    WinkingFace = imread(fullfile(FacesDir,'wink24.bmp'),'bmp');
+    FrownyFace = imread(fullfile(FacesDir,'frown24.bmp'),'bmp');
+    %ClosedFace = imread(fullfile(FacesDir,'closed24.bmp'),'bmp');
+    %OpenFace = imread(fullfile(FacesDir,'open24.bmp'),'bmp');
+    %BlankFace = imread(fullfile(FacesDir,'blank24.bmp'),'bmp');
+    p.CorrectImage=SmileyFace;
+    p.IncorrectImage=FrownyFace;
+end
+
+In TransposedIADsParseArgs.masker
+Add near bottom:
+
+%% Read in feedback faces
+sArgs=readFaces(sArgs);
+
+and need readFaces.m in the directory
+----------------------------------------------------------------
 	
 	
 Aspects of masking noise
