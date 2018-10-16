@@ -329,7 +329,6 @@ fclose('all');
 set(0,'ShowHiddenHandles','on');
 delete(findobj('Type','figure'));
 if ~p.DEBUG && ~p.PlotTrackFile
-<<<<<<< HEAD
 %     FinishButton; % indicate test is over
 elseif p.PlotTrackFile && trial>5
     plotHandle = plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
@@ -337,12 +336,6 @@ elseif p.PlotTrackFile && trial>5
         saveas(plotHandle,fullfile(p.OutputDir,[FileListenerName '.png']));
         close(gcf)
     end
-=======
-    FinishButton; % indicate test is over
-elseif p.PlotTrackFile
-    plotHandle = plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
-    saveas(plotHandle,fullfile(p.OutputDir,[FileListenerName '.png']));
->>>>>>> ad276f63ee08f99811591a7487863efae64ffefc
 end
 
 if p.usePlayrec==1

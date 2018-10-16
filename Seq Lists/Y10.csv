@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,START_change_dB,MIN_change_dB,InitialDescentMinimum,MAX_SNR_dB,MIN_SNR_dB,StartMessage,
 0,1,ITD,16.9,5,80,4,1,3,16.9,-6,,
 0,1,ILD,4,5,40,1,0.25,0.5,6,0.125,,
@@ -10,30 +9,3 @@ nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,START_change_dB,MIN_ch
 1,0,ILD,4,30,40,1,0.25,0.5,6,0.125,This will be rather quiet,
 1,0,ILD,4,30,40,1,0.25,0.5,6,0.125,This will be rather quiet,
 1,0,ITD,16.9,30,40,4,1,3,16.9,-6,This will be rather quiet,
-=======
-<<<<<<< HEAD
-nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,StartMessage
-0,1,ILD,4,5,80,
-0,1,ITD,17,5,80,
-1,0,ITD,17,30,40,This will be rather quiet
-1,0,ILD,4,30,40,This will be rather quiet
-1,0,ITD,17,30,80,This will be fairly loud
-1,0,ILD,4,30,80,This will be fairly loud
-1,0,ITD,17,30,80,This will be fairly loud
-1,0,ILD,4,30,40,This will be rather quiet
-1,0,ITD,17,30,40,This will be rather quiet
-1,0,ILD,4,30,80,This will be fairly loud
-=======
-nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,StartMessage,
-0,1,ILD,4,5,80,,
-0,1,ITD,20,5,80,,
-1,0,ITD,20,30,40,This will be rather quiet,
-1,0,ILD,4,30,40,This will be rather quiet,
-1,0,ITD,20,30,80,This will be fairly loud,
-1,0,ILD,4,30,80,This will be fairly loud,
-1,0,ITD,20,30,80,This will be fairly loud,
-1,0,ILD,4,30,40,This will be rather quiet,
-1,0,ITD,20,30,40,This will be rather quiet,
-1,0,ILD,4,30,80,This will be fairly loud,
->>>>>>> f639f2453596ab005ca8d311f9d4d36be947549c
->>>>>>> ad276f63ee08f99811591a7487863efae64ffefc
