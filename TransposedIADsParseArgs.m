@@ -105,15 +105,7 @@ p.addParameter('HiBackNzHiPass',4400, @isnumeric);
 p.addParameter('PlotTrackFile', 1, @isnumeric); % once test is finished
 p.addParameter('DEBUG', 0, @isnumeric);
 p.addParameter('outputAllWavs', 0, @isnumeric); % for debugging purposes
-<<<<<<< HEAD
 p.addParameter('MAX_SNR_dB', 16.9, @isnumeric); % maximal difference
-=======
-<<<<<<< HEAD
-p.addParameter('MAX_SNR_dB', 16.9, @isnumeric); % maximal difference
-=======
-p.addParameter('MAX_SNR_dB', 22, @isnumeric); % maximal difference
->>>>>>> ad276f63ee08f99811591a7487863efae64ffefc
->>>>>>> c9954713f7f0da839c28bc68d06e15c05c1211d9
 p.addParameter('MIN_SNR_dB', 0.25, @isnumeric); % minimal difference: for ILD only
 p.addParameter('IgnoreTrials', 3, @isnumeric); % number of initial trials to ignore errors on
 p.addParameter('OutputDir','results', @ischar);
