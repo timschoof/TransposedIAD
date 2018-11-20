@@ -94,12 +94,12 @@ p.addParameter('MAX_TRIALS', 30, @isnumeric);
 p.addParameter('FacePixDir', 'Bears', @ischar);
 p.addParameter('GoButton', 1, @isnumeric);
 %% parameters concerned with background noise
-p.addParameter('BackNzLevel',-2, @isnumeric); % in dB re target level
-p.addParameter('LoBackNzLoPass',3600, @isnumeric);
+p.addParameter('BackNzLevel',-8.5, @isnumeric); % -2, in dB re target level
+p.addParameter('LoBackNzLoPass',1300, @isnumeric); % 3600
 p.addParameter('LoBackNzHiPass',20, @isnumeric);
 %p.addParameter('HiBackNzLevel',0, @isnumeric); % in absolute rms
-p.addParameter('HiBackNzLoPass',10000, @isnumeric);
-p.addParameter('HiBackNzHiPass',4400, @isnumeric);
+p.addParameter('HiBackNzLoPass',22000, @isnumeric); %10000
+p.addParameter('HiBackNzHiPass',21990, @isnumeric); %4400
 % p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
 p.addParameter('PlotTrackFile', 1, @isnumeric); % once test is finished
