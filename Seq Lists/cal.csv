@@ -1,0 +1,2 @@
+nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,START_change_dB,MIN_change_dB,InitialDescentMinimum,MAX_SNR_dB,MIN_SNR_dB,TranspositionFreq,ModulationRate,BackNzLevel,StartMessage
+0,1,ILD,0,5,70,0,0.25,0.5,6,0.125,0,500,-100,This will be fairly loud

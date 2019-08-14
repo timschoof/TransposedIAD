@@ -6,7 +6,7 @@ else
     wavFile=char(varargin{1});
     path=[];
 end
-if ~exist(wavFile, 'file')
+if ~exist(fullfile(path,wavFile), 'file')
     [wavFile,path] = uigetfile('*.wav');
 end
 [y, SampFreq]=audioread(fullfile(path,wavFile));

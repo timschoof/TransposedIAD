@@ -1,0 +1,10 @@
+nBlocks,nPracticeTrials,IAD,starting_SNR,MAX_TRIALS,dBSPL,START_change_dB,MIN_change_dB,InitialDescentMinimum,MAX_SNR_dB,MIN_SNR_dB,TranspositionFreq,ModulationRate,BackNzLevel,StartMessage
+0,1,ITD,16.9,5,80,4,1,6,16.9,-6,4000,125,-8.5,This will be fairly loud
+0,1,ITD,16.9,5,40,4,1,6,16.9,-6,4000,125,-8.5,This will be rather quiet
+0,1,ILD,4,5,70,1,0.25,0.5,6,0.125,0,500,-100,This will be fairly loud
+1,0,ITD,16.9,50,80,4,1,6,16.9,-6,4000,125,-8.5,This will be fairly loud
+1,0,ILD,4,50,70,1,0.25,0.5,6,0.125,0,500,-100,This will be fairly loud
+1,0,ILD,4,50,70,1,0.25,0.5,6,0.125,0,500,-100,This will be fairly loud
+1,0,ITD,16.9,50,80,4,1,6,16.9,-6,4000,125,-8.5,This will be fairly loud
+1,0,ITD,16.9,50,40,4,1,6,16.9,-6,4000,125,-8.5,This will be rather quiet
+1,0,ITD,16.9,50,40,4,1,6,16.9,-6,4000,125,-8.5,This will be rather quiet
